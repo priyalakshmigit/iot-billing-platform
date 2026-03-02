@@ -202,6 +202,7 @@ Session hash fields:
 Operational notes:
 - Redis is used as hot mutable state, not final source of truth.
 - Atomic Lua scripts are used for save/finalize/delete transitions to avoid partial updates.
+- TTL policy: active session keys are not finalized via TTL expiry; stale handling is intentionally driven by the sweeper + explicit stale events to avoid missed billing due to lost expiration notifications.
 
 ### 6.2 PostgreSQL Model (Completed State)
 
