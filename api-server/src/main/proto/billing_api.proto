@@ -1,0 +1,47 @@
+syntax = "proto3";
+
+package skylo.billing.v1;
+
+option java_multiple_files = true;
+option java_package = "com.skylo.iot.api_server.grpc.generated";
+option java_outer_classname = "BillingApiProto";
+
+import "google/protobuf/timestamp.proto";
+
+service BillingApi {
+  rpc GetLiveDeviceStatus (LiveDeviceStatusRequest) returns (LiveDeviceStatusResponse);
+  rpc GetBillingHistory (BillingHistoryRequest) returns (BillingHistoryResponse);
+}
+
+message LiveDeviceStatusRequest {
+  string device_id = 1;
+}
+
+message LiveDeviceStatusResponse {
+  string device_id = 1;
+  bool attached = 2;
+  int64 current_total_bytes = 3;
+  string current_status = 4;
+  google.protobuf.Timestamp start_ts = 5;
+  google.protobuf.Timestamp last_active_ts = 6;
+}
+
+message BillingHistoryRequest {
+  string device_id = 1;
+}
+
+message BillingRecord {
+  string session_id = 1;
+  string device_id = 2;
+  google.protobuf.Timestamp start_ts = 3;
+  google.protobuf.Timestamp end_ts = 4;
+  int64 total_bytes = 5;
+  string final_status = 6;
+  google.protobuf.Timestamp finalized_at = 7;
+  string finalized_by_event_id = 8;
+}
+
+message BillingHistoryResponse {
+  string device_id = 1;
+  repeated BillingRecord records = 2;
+}
